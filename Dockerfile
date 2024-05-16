@@ -14,20 +14,20 @@ RUN apt-get update \
       pip
 
 # Custom entrypoint
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scraper/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 RUN mkdir -p /output
 WORKDIR /output
 
 # Copy pyproject.toml and its dependencies
-COPY pyproject.toml README.md get_js_deps.sh hatch_build.py /src/
-COPY src/youtube2zim/__about__.py /src/src/youtube2zim/__about__.py
+COPY scraper/pyproject.toml README.md scraper/get_js_deps.sh scraper/hatch_build.py /src/
+COPY scraper/src/youtube2zim/__about__.py /src/src/youtube2zim/__about__.py
 
 # Install Python dependencies
 RUN pip install --no-cache-dir /src
 
 # Copy code + associated artifacts
-COPY src /src/src
+COPY scraper/src /src/src
 COPY *.md LICENSE CHANGELOG /src/
 
 # Install + cleanup
